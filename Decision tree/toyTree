@@ -1,0 +1,104 @@
+// The Decision Tree
+digraph {
+	0 [label="
+id: 0
+value: -
+attribute: size
+entropy: 0.9886994082884974
+samples: 16
+classCounts: Counter({'+': 9, '-': 7})"]
+	1 [label="
+id: 1
+value: s
+attribute: shape
+entropy: 0.8112781244591328
+samples: 8
+classCounts: Counter({'+': 6, '-': 2})"]
+	0 -> 1
+	2 [label="
+id: 2
+value: r
+attribute: color
+entropy: 0.9182958340544896
+samples: 6
+classCounts: Counter({'+': 4, '-': 2})"]
+	1 -> 2
+	3 [label="
+id: 3
+value: y
+label: +
+entropy: 0.7219280948873623
+samples: 5
+classCounts: Counter({'+': 4, '-': 1})"]
+	2 -> 3
+	4 [label="
+id: 4
+value: g
+label: -
+entropy: -0.0
+samples: 1
+classCounts: Counter({'-': 1})"]
+	2 -> 4
+	5 [label="
+id: 5
+value: r
+label: +
+samples: 0
+classCounts: Counter()"]
+	2 -> 5
+	6 [label="
+id: 6
+value: i
+label: +
+entropy: -0.0
+samples: 2
+classCounts: Counter({'+': 2})"]
+	1 -> 6
+	7 [label="
+id: 7
+value: l
+attribute: color
+entropy: 0.954434002924965
+samples: 8
+classCounts: Counter({'-': 5, '+': 3})"]
+	0 -> 7
+	8 [label="
+id: 8
+value: y
+attribute: shape
+entropy: 0.9852281360342515
+samples: 7
+classCounts: Counter({'-': 4, '+': 3})"]
+	7 -> 8
+	9 [label="
+id: 9
+value: r
+label: -
+entropy: 0.9182958340544896
+samples: 6
+classCounts: Counter({'-': 4, '+': 2})"]
+	8 -> 9
+	10 [label="
+id: 10
+value: i
+label: +
+entropy: -0.0
+samples: 1
+classCounts: Counter({'+': 1})"]
+	8 -> 10
+	11 [label="
+id: 11
+value: g
+label: -
+entropy: -0.0
+samples: 1
+classCounts: Counter({'-': 1})"]
+	7 -> 11
+	12 [label="
+id: 12
+value: l
+label: -
+samples: 0
+classCounts: Counter()"]
+	7 -> 12
+}
