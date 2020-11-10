@@ -4,16 +4,8 @@ from math import log
 import numpy as np
 
 #-----------------------------------------------------------------------------
-# Code
+# Functions:
 #-----------------------------------------------------------------------------
-
-#     def get_labels(data, attribute=None, target=None):
-#         attributes = [attribute, target]
-#         labels = [{}, {}]
-#         for i in range(len(attributes)):
-#             attr = attributes[i]
-#             attr_label = labels[i]
-#             for 
 
 def get_labels(attribute_column):
     labels = {}
@@ -60,7 +52,7 @@ def most_common_class(target):
     return max(classes.keys(), key=(lambda key: classes[key]))
 
 #-----------------------------------------------------------------------------
-# Code
+# Classifier
 #-----------------------------------------------------------------------------
 class ID3DecisionTreeClassifier :
 
@@ -70,7 +62,7 @@ class ID3DecisionTreeClassifier :
         self.__nodeCounter = 0
 
         # the graph to visualise the tree
-        self.__dot = Digraph(comment='The Decision Tree')
+        self.__dot = Digraph(comment='The Decision Tree: ID3')
 
         # suggested attributes of the classifier to handle training parameters
         self.__minSamplesLeaf = minSamplesLeaf
@@ -97,9 +89,8 @@ class ID3DecisionTreeClassifier :
         if (parentid != -1):
             self.__dot.edge(str(parentid), str(node['id']))
             nodeString += "\n" + str(parentid) + " -> " + str(node['id'])
-
-        print(nodeString)
-
+        #print(nodeString)
+        
         return
 
 
@@ -110,9 +101,6 @@ class ID3DecisionTreeClassifier :
     
     
     
-    
-    # For you to fill in; Suggested function to find the best attribute to split with, given the set of
-    # remaining attributes, the currently evaluated data and target.
     def find_split_attr(self, data, target, attributes, classes):
         data = np.array(data)
         target = np.array(target)
@@ -136,8 +124,8 @@ class ID3DecisionTreeClassifier :
         
         return max(Gain.keys(), key=(lambda key: Gain[key])), I
     
-    # the entry point for the recursive ID3-algorithm, you need to fill in the calls to your recursive implementation
-    def fit(self, data, target, attributes, classes, isRoot=True, value='-'):
+
+    def fit(self, data, target, attributes, classes, isRoot=True, value='-', iD=-1):
         data = np.array(data)
         target = np.array(target)
         root = self.new_ID3_node()
@@ -159,13 +147,13 @@ class ID3DecisionTreeClassifier :
         if len(set(target)) == 1:
             root['label'] = most_common_class(target)
             root['entropy'] = 0
-            self.add_node_to_graph(root)
+            self.add_node_to_graph(root, iD)
         # If attributes is empty
         elif attributes == {}:
             root['label'] = most_common_class(target)
             root['entropy'] = I
 
-            self.add_node_to_graph(root)
+            self.add_node_to_graph(root, iD)
         else:
             A, I = self.find_split_attr(data, target, attributes, classes)
             root['attribute'] = A
@@ -174,7 +162,7 @@ class ID3DecisionTreeClassifier :
             idx_attr = index_attribute(attributes, A)
             datas, targets = new_data(data, target, attributes[A], idx_attr)
             root['nodes'] = {}
-            self.add_node_to_graph(root)
+            self.add_node_to_graph(root, iD)
             for key in datas.keys():
 
                 # If Samples(v) is empty      
@@ -185,12 +173,12 @@ class ID3DecisionTreeClassifier :
                     branch.update({'value': key})
                     branch.update({'label': most_common_class(target)})
                     root['nodes'][key] = branch
-                    self.add_node_to_graph(branch)
+                    self.add_node_to_graph(branch, root['id'])
                 else:
                     
                     attributes_copy = dict(attributes)
                     attributes_copy.pop(A, None)
-                    node = self.fit(datas[key], targets[key], attributes_copy, classes, False, key)
+                    node = self.fit(datas[key], targets[key], attributes_copy, classes, False, key, root['id'])
                     root['nodes'][key] = node
                     
         return root
@@ -201,11 +189,7 @@ class ID3DecisionTreeClassifier :
         if node['nodes']==None or node['nodes']=={}:
             return node['label']
         else:
-#             print(node['attribute'])
-#             print(x)
-#             print(node['nodes'].keys())
             idx_attr = index_attribute(attributes, node['attribute'])
-#             print(idx_attr)
             c = node['nodes'][x[idx_attr]]
             return self.predicted_rek(c, x, attributes)
                 
@@ -216,7 +200,6 @@ class ID3DecisionTreeClassifier :
         predicted = list()
         for i in range (data.shape[0]):
             x = data[i,:]
-#             print(x)
             predicted += [self.predicted_rek(tree, x, attributes)]
         
         return predicted
