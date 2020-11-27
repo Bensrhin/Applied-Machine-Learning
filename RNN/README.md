@@ -6,7 +6,7 @@ We use a dataset from the CoNLL conferences that benchmark natural language proc
 ## Objectives
 
 * Load pre-trained word vectors, and measure similarity using cosine similarity.
-* Apply stacking embeddings: GloVe embeddings + Traning arbitrary initilized emebddings.
+* Apply stacking embeddings: GloVe embeddings + Traning arbitrary initialized embeddings.
 * Experiment different architectures, namely RNN and LSTM.
 
 ### Installing
